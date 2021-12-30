@@ -1,7 +1,13 @@
+package ss.board;
+
+import ss.Marble;
+
 public class Board {
 
     private Marble[][] fields;
     private Marble[][] quadrant;
+    private Quadrant[] allQuadrants;
+
     private final int DIM = 6;
 
     /**
@@ -159,7 +165,7 @@ public class Board {
 
     /**
      * prints the string representation of the board
-     * it shows the numbering of the fields
+     * it shows the numbering of the fields and quadrants
      * we make one board which represents both the numbers and placed
      * marbles at the same time
      * @return String representation of the current board
@@ -193,4 +199,46 @@ public class Board {
     public void setField(int row, int col, Marble marble) {
 
     }
+
+    /**
+     * specifies at which quadrant the index is in
+     * @param index given index
+     * @return number of quadrant
+     */
+    public int getQuadrantIndex(int index){
+        return 0;
+    }
+
+    /**
+     * converts boardwide index to quadrant row and col
+     * @param index board field
+     * @return row and col in quadrant
+     */
+    public int[] getQuadrantRowCol(int index){
+        return null;
+    }
+
+    /**
+     * transforms the variable allQuadrants to the variable fields
+     */
+    public void updateFields(){
+
+    }
+
+    /**
+     * transforms the variable fields to the variable allQuadrants
+     */
+    public void updateQuadrants(){
+
+    }
+
+    /**
+     * rotates a quadrant of the board
+     * @param numQuad number of quadrant to be rotated
+     * @param direction direction of rotation
+     */
+    public void rotateQuadrant(int numQuad, char direction) {
+
+    }
+
 }

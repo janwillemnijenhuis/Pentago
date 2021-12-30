@@ -1,3 +1,5 @@
+package ss;
+
 public enum Marble {
     EMPTY,
     BLACK,
