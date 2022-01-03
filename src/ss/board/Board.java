@@ -64,14 +64,14 @@ public class Board {
         return row*6 + col;
     }
 
-    /*
+
     public int[] getRowCol(int index) {
         int[] rowCol = new int[2];
         rowCol[0] = index/6;
         rowCol[1] = index%6;
         return rowCol;
     }
-    */
+
 
     /**
      * checks if index if valid 0..35
@@ -79,6 +79,9 @@ public class Board {
      * @return true if valid, false otherwise
      */
     public boolean isField(int index) {
+        if (index >= 0 && index <DIM*DIM){
+            return true;
+        }
         return false;
     }
 
@@ -89,7 +92,8 @@ public class Board {
      * @return true if valid, false if not
      */
     public boolean isField(int row, int col) {
-        return false;
+        int index = getIndex(row,col);
+        return isField(index);
     }
 
     /**
@@ -98,7 +102,10 @@ public class Board {
      * @return the marble in the field
      */
     public Marble getField(int index) {
-        return null;
+        int row = getRowCol(index)[0];
+        int col = getRowCol(index)[1];
+        Marble marble = fields[row][col];
+        return marble;
     }
 
     /**
@@ -108,7 +115,8 @@ public class Board {
      * @return the marble in the field
      */
     public Marble getField(int row, int col) {
-        return null;
+        Marble marble = fields[row][col];
+        return marble;
     }
 
     /**
@@ -117,6 +125,10 @@ public class Board {
      * @return true if empty, false if not
      */
     public boolean isEmpty(int index) {
+        Marble marble = getField(index);
+        if(marble.isEqual(marble,Marble.EMPTY)) {
+            return true;
+        }
         return false;
     }
 
@@ -127,7 +139,8 @@ public class Board {
      * @return true if empty, false if not
      */
     public boolean isEmpty(int row, int col) {
-        return false;
+        int index = getIndex(row,col);
+        return isEmpty(index);
     }
 
     /**
@@ -135,7 +148,12 @@ public class Board {
      * @return true if full, false otherwise
      */
     public boolean isFull() {
-        return false;
+        for (int i = 0; i < DIM*DIM; i++) {
+            if(isEmpty(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
