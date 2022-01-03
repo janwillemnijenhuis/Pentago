@@ -2,18 +2,38 @@ package ss.board;
 
 import ss.Marble;
 
+/**
+ * Board for the Pentago game. UT Software Systems final project
+ * @author andreas.kakotaritis
+ * @version 0.1
+ */
+
 public class Board {
 
-    private Marble[][] fields;
+    /*@ private invariant fields.length == DIM*DIM;
+        private invariant (\forall int i, j; (i >= 0 && i < DIM) && (j>=0 && j<DIM); fields[i][j] == Marble.EMPTY || fields[i] == Marble.BLACK || fields[i] == Marble.WHITE);
+    @*/
+
+    private final int DIM = 6;
+    private Marble[][] fields = new Marble[DIM][DIM];
     private Marble[][] quadrant;
     private Quadrant[] allQuadrants;
 
-    private final int DIM = 6;
+
 
     /**
      * initialize empty board
      */
+
+    //@ ensures (\forall int i,j; (i >= 0 && i < DIM*DIM) && (j>=0 && j<DIM); fields[i][j] == Marble.EMPTY);
+
     public Board() {
+        for (int i = 0; i < DIM; i++) {
+            for (int j = 0; j < DIM; j++) {
+                this.fields[i][j] = Marble.EMPTY;
+            }
+
+        }
 
     }
 
@@ -22,7 +42,15 @@ public class Board {
      * @return the deepcopy
      */
     public Board deepCopy() {
-        return null;
+        Board boardCopy = new Board();
+
+        for (int i = 0 ; i<DIM; i++){
+            for (int j = 0; j < DIM; j++) {
+                boardCopy.fields[i][j] = this.fields[i][j];
+            }
+
+        }
+        return boardCopy;
     }
 
     /**
@@ -31,9 +59,19 @@ public class Board {
      * @param col index
      * @return index on board
      */
+    //is this what we want or the opposite?
     public int getIndex(int row, int col) {
-        return 0;
+        return row*6 + col;
     }
+
+    /*
+    public int[] getRowCol(int index) {
+        int[] rowCol = new int[2];
+        rowCol[0] = index/6;
+        rowCol[1] = index%6;
+        return rowCol;
+    }
+    */
 
     /**
      * checks if index if valid 0..35
