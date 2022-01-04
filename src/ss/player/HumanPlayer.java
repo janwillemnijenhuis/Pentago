@@ -2,6 +2,10 @@ package ss.player;
 
 import ss.board.Board;
 import ss.Marble;
+import ss.utils.TextIO;
+
+import java.io.*;
+import java.util.Scanner;
 
 public class HumanPlayer extends Player {
     /**
@@ -15,13 +19,23 @@ public class HumanPlayer extends Player {
     }
 
     /**
-     * determines a move for the plyer
+     * determines a move for the player
      *
      * @param board the board the player plays in
-     * @return the index of the field
+     * @return the index of the field, -1 if this is an invalid move
      */
     @Override
-    public int determineMove(Board board) {
-        return 0;
+    public int determineMove(Board board, Reader in, PrintStream out) {
+        Scanner sc = new Scanner(in);
+        String prompt = "> Player " + getName() + " (" + getMarble() +"): What is your choice? ";
+        out.println(prompt);
+        int choice = sc.nextInt();
+        boolean valid = board.isField(choice) && board.isEmpty(choice);
+        while (!valid) {
+            out.println("ERROR: Invalid number - Field is occupied or move is not on the board\n" + prompt);
+            choice = sc.nextInt();
+            valid = board.isField(choice) && board.isEmpty(choice);
+        }
+        return choice;
     }
 }
