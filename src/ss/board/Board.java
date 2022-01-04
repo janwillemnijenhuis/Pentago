@@ -2,6 +2,8 @@ package ss.board;
 
 import ss.Marble;
 
+import java.util.Arrays;
+
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
@@ -18,6 +20,17 @@ public class Board {
     private Marble[][] fields = new Marble[DIM][DIM];
     private Marble[][] quadrant;
     private Quadrant[] allQuadrants;
+    private Marble[][] winningWhiteRows = {{Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE},
+            {Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.BLACK},
+            {Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.EMPTY},
+            {Marble.BLACK,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE},
+            {Marble.EMPTY,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE}};
+
+    private Marble[][] winningBlackRows = {{Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK},
+            {Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.WHITE},
+            {Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.EMPTY},
+            {Marble.WHITE,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK},
+            {Marble.EMPTY,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK}};
 
 
     /**
@@ -183,13 +196,25 @@ public class Board {
      * @return true if full row, false otherwise
      */
     public boolean hasRow(Marble marble) {
-        for (int i = 0; i < DIM; i++) {
-            if((fields[i][0] == marble && fields[i][0] == fields[i][1] && fields[i][0] == fields[i][2] && fields[i][0] == fields[i][3] && fields[i][0] == fields[i][4])||
-                    (fields[i][5] == marble && fields[i][5] == fields[i][1] && fields[i][5] == fields[i][2] && fields[i][5] == fields[i][3] && fields[i][5] == fields[i][4])) {
-                return true;
+        if (marble.isEqual(marble,Marble.BLACK)) {
+            for (int i = 0; i < DIM; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if ((Arrays.equals(fields[i], winningBlackRows[j]))) {
+                        return true;
+                    }
+                }
             }
-
         }
+        if (marble.isEqual(marble,Marble.WHITE)) {
+            for (int i = 0; i < DIM; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if ((Arrays.equals(fields[i], winningWhiteRows[j]))) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
@@ -205,7 +230,7 @@ public class Board {
                     (fields[5][i] == marble && fields[5][i] == fields[1][i] && fields[5][i] == fields[2][i] && fields[5][i] == fields[3][i] && fields[5][i] == fields[4][i])) {
                 return true;
             }
-            }
+        }
         return false;
     }
 
@@ -217,9 +242,14 @@ public class Board {
      */
     public boolean hasDiagonal(Marble marble) {
 
-            if ((fields[0][1] == marble && fields[1][2] == marble && fields[3][2] == marble && fields[4][3] == marble && fields[5][4] == marble)||
+            if ((fields[0][1] == marble && fields[1][2] == marble && fields[2][3] == marble && fields[3][4] == marble && fields[4][5] == marble)||
                     (fields[0][0] == marble && fields[1][1] == marble && fields[2][2] == marble && fields[3][3] == marble && fields[4][4] == marble)||
-                    (fields[1][0] == marble)) {
+                    (fields[5][5] == marble && fields[1][1] == marble && fields[2][2] == marble && fields[3][3] == marble && fields[4][4] == marble) ||
+                    (fields[1][0] == marble && fields[2][1] == marble && fields[3][2] == marble && fields[4][3] == marble && fields[5][4] == marble) ||
+                    (fields[0][4] == marble && fields[1][3] == marble && fields[3][2] == marble && fields[3][1] == marble && fields[4][0] == marble)||
+                    (fields[0][5] == marble && fields[1][4] == marble && fields[2][3] == marble && fields[3][2] == marble && fields[4][1] == marble) ||
+                    (fields[5][0] == marble && fields[1][4] == marble && fields[2][3] == marble && fields[3][2] == marble && fields[4][1] == marble) ||
+                    (fields[1][5] == marble && fields[2][4] == marble && fields[3][3] == marble && fields[4][2] == marble && fields[5][1] == marble)) {
                 return true;
             }
 
