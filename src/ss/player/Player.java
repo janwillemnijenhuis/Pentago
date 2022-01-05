@@ -51,11 +51,18 @@ public abstract class Player {
     }
 
     /**
-     * determines a move for the plyer
+     * determines a move for the player with IO
      * @param board the board the player plays in
      * @return the index of the field, -1 if it is an invalid move
      */
     public abstract int determineMove(Board board, Reader in, PrintStream out);
+
+    /**
+     * determines a move without IO
+     * @param board the current board
+     * @return the index to move
+     */
+    public abstract int determineMove(Board board);
 
     /**
      * places the marble on the board
@@ -65,5 +72,4 @@ public abstract class Player {
     public void makeMove(Board board, int index){
         board.setField(index, this.marble);
     }
-
 }

@@ -3,6 +3,11 @@ package ss.strategy;
 import ss.board.Board;
 import ss.Marble;
 
+/**
+ * random strategy to place a marble on the board
+ * @author janwillem.nijenhuis
+ * @version 0.1.0
+ */
 public class RandomStrategy implements Strategy{
     /**
      * gets the name of the strategy
@@ -11,7 +16,7 @@ public class RandomStrategy implements Strategy{
      */
     @Override
     public String getName() {
-        return null;
+        return "Random";
     }
 
     /**
