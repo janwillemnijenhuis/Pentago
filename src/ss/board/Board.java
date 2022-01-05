@@ -241,4 +241,11 @@ public class Board {
 
     }
 
+    /**
+     * @return the dimension of the board
+     */
+    public int getDIM() {
+        return this.DIM;
+    }
+
 }

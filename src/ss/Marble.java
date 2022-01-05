@@ -1,5 +1,10 @@
 package ss;
 
+/**
+ * Marble enum used in the pentago Software Systems UT project
+ * @author janwillem.nijenhuis
+ * @version 0.2.0
+ */
 public enum Marble {
     EMPTY,
     BLACK,
@@ -7,11 +12,10 @@ public enum Marble {
 
     /**
      * checks if marble is equal to the other marble
-     * @param marble marble to check
-     * @param other marble to compare to
+     * @param other marble to check
      * @return true if equal, false otherwise
      */
-    public boolean isEqual(Marble marble, Marble other) {
-        return false;
+    public boolean isEqual(Marble other) {
+        return this.equals(other);
     }
 }
