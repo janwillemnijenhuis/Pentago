@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
- * @version 0.2
+ * @version 0.3
  */
 
 public class Board {
@@ -79,9 +79,7 @@ public class Board {
 
 
     public int[] getRowCol(int index) {
-        int[] rowCol = new int[2];
-        rowCol[0] = index / 6;
-        rowCol[1] = index % 6;
+        int[] rowCol = {index/6 , index%6};
         return rowCol;
     }
 
@@ -93,10 +91,7 @@ public class Board {
      * @return true if valid, false otherwise
      */
     public boolean isField(int index) {
-        if (index >= 0 && index < DIM * DIM) {
-            return true;
-        }
-        return false;
+        return (index >= 0 && index < DIM * DIM);
     }
 
     /**
@@ -107,8 +102,7 @@ public class Board {
      * @return true if valid, false if not
      */
     public boolean isField(int row, int col) {
-        int index = getIndex(row, col);
-        return isField(index);
+        return isField(getIndex(row, col));
     }
 
     /**
@@ -120,8 +114,7 @@ public class Board {
     public Marble getField(int index) {
         int row = getRowCol(index)[0];
         int col = getRowCol(index)[1];
-        Marble marble = fields[row][col];
-        return marble;
+        return fields[row][col];
     }
 
     /**
@@ -132,8 +125,7 @@ public class Board {
      * @return the marble in the field
      */
     public Marble getField(int row, int col) {
-        Marble marble = fields[row][col];
-        return marble;
+        return fields[row][col];
     }
 
     /**
@@ -144,10 +136,8 @@ public class Board {
      */
     public boolean isEmpty(int index) {
         Marble marble = getField(index);
-        if (marble.isEqual(marble, Marble.EMPTY)) {
-            return true;
-        }
-        return false;
+        return marble.isEqual(Marble.EMPTY);
+
     }
 
     /**
@@ -158,8 +148,7 @@ public class Board {
      * @return true if empty, false if not
      */
     public boolean isEmpty(int row, int col) {
-        int index = getIndex(row, col);
-        return isEmpty(index);
+        return isEmpty(getIndex(row, col));
     }
 
     /**
@@ -183,10 +172,7 @@ public class Board {
      * @return true if game over, false otherwise
      */
     public boolean gameOver() {
-        if (isFull() || hasWinner() || isDraw()) {
-            return true;
-        }
-        return false;
+        return (isFull() || hasWinner() || isDraw());
     }
 
     /**
@@ -196,7 +182,7 @@ public class Board {
      * @return true if full row, false otherwise
      */
     public boolean hasRow(Marble marble) {
-        if (marble.isEqual(marble,Marble.BLACK)) {
+        if (marble.isEqual(Marble.BLACK)) {
             for (int i = 0; i < DIM; i++) {
                 for (int j = 0; j < 5; j++) {
                     if ((Arrays.equals(fields[i], winningBlackRows[j]))) {
@@ -205,7 +191,7 @@ public class Board {
                 }
             }
         }
-        if (marble.isEqual(marble,Marble.WHITE)) {
+        else if (marble.isEqual(Marble.WHITE)) {
             for (int i = 0; i < DIM; i++) {
                 for (int j = 0; j < 5; j++) {
                     if ((Arrays.equals(fields[i], winningWhiteRows[j]))) {
@@ -264,10 +250,7 @@ public class Board {
      * @return true if has won, false otherwise
      */
     public boolean isWinner(Marble marble) {
-        if (hasCol(marble) || hasRow(marble) || hasDiagonal(marble)) {
-            return true;
-        }
-        return false;
+        return (hasCol(marble) || hasRow(marble) || hasDiagonal(marble));
     }
 
 
@@ -279,15 +262,7 @@ public class Board {
      * @return true if draw, false otherwise
      */
     public boolean isDraw() {
-        if (isWinner(Marble.BLACK) && isWinner(Marble.WHITE)) {
-            return true;
-        }
-        else if (isFull()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return ((isWinner(Marble.BLACK) && isWinner(Marble.WHITE)) || isFull());
     }
 
     /**
@@ -295,10 +270,7 @@ public class Board {
      * @return true if someone has won, false otherwise
      */
     public boolean hasWinner() {
-        if ((isWinner(Marble.WHITE) && !isDraw()) || (isWinner(Marble.BLACK) && !isDraw())) {
-            return true;
-        }
-        return false;
+        return ((isWinner(Marble.WHITE) && !isDraw()) || (isWinner(Marble.BLACK) && !isDraw()));
     }
 
     /**
