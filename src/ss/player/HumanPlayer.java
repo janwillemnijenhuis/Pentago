@@ -7,6 +7,11 @@ import ss.utils.TextIO;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * HumanPlayer for the Pentago Software Systems UT project
+ * @author janwillem.nijenhuis
+ * @version 0.1.0
+ */
 public class HumanPlayer extends Player {
     /**
      * creates a player with given name and marble

@@ -6,6 +6,11 @@ import ss.Marble;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the Marble enum from the Pentago Software Systems UT project
+ * @author janwillem.nijenhuis
+ * @version 0.1.0
+ */
 public class MarbleTest {
     Marble black;
     Marble white;

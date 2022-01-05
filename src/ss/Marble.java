@@ -1,5 +1,10 @@
 package ss;
 
+/**
+ * Marble enum used in the pentago Software Systems UT project
+ * @author janwillem.nijenhuis
+ * @version 0.2.0
+ */
 public enum Marble {
     EMPTY,
     BLACK,

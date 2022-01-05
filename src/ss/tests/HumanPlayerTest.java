@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the Human Player class
+ * @author janwillem.nijenhuis
+ * @version 0.1.0
  */
 public class HumanPlayerTest {
     HumanPlayer humanPlayerBlack;

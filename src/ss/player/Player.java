@@ -8,6 +8,11 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
 
+/**
+ * abstract player class for the pentago UT Software Systems project
+ * @author janwillem.nijenhuis
+ * @version 0.1.0
+ */
 public abstract class Player {
 
     private Marble marble;
