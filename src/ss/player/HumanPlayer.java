@@ -2,7 +2,6 @@ package ss.player;
 
 import ss.board.Board;
 import ss.Marble;
-import ss.utils.TextIO;
 
 import java.io.*;
 import java.util.Scanner;

@@ -2,13 +2,18 @@ package ss.player;
 
 import ss.board.Board;
 import ss.Marble;
+import ss.strategy.SmartStrategy;
 import ss.strategy.Strategy;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
 
+/**
+ * smart player for the Pentago Software Systems UT project
+ * this should get different levels of difficulty, and one to launch the AI
+ * @author janwillem.nijenhuis
+ * @version 0.1.0
+ */
 public class SmartPlayer extends Player{
 
     private Strategy strategy;
@@ -20,6 +25,15 @@ public class SmartPlayer extends Player{
      */
     public SmartPlayer(String name, Marble marble) {
         super(name, marble);
+        this.strategy = new SmartStrategy();
+    }
+
+    /**
+     * should not be used for a smart player
+     */
+    @Override
+    public int determineMove(Board board, Reader in, PrintStream out) {
+        return -1;
     }
 
     /**
@@ -29,7 +43,7 @@ public class SmartPlayer extends Player{
      * @return the index of the field, -1 if it is an invalid move
      */
     @Override
-    public int determineMove(Board board, Reader in, PrintStream out) {
-        return -1;
+    public int determineMove(Board board) {
+        return this.strategy.determineMove(board, this.getMarble());
     }
 }

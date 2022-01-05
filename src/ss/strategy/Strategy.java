@@ -3,6 +3,11 @@ package ss.strategy;
 import ss.board.Board;
 import ss.Marble;
 
+/**
+ * Strategy interface
+ * @author janwillem.nijenhuis
+ * @version 0.1.0
+ */
 public interface Strategy {
     /**
      * gets the name of the strategy
