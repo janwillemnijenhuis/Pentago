@@ -42,4 +42,9 @@ public class HumanPlayer extends Player {
         }
         return choice;
     }
+
+    @Override
+    public int determineMove(Board board) {
+        return -1;
+    }
 }

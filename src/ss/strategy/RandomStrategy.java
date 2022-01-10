@@ -23,11 +23,15 @@ public class RandomStrategy implements Strategy{
      * given board and marble it determines a move
      *
      * @param board  the board it plays in
-     * @param marble the marbe it plays with
+     * @param marble the marble it plays with
      * @return index of the field
      */
     @Override
     public int determineMove(Board board, Marble marble) {
-        return 0;
+        int move;
+        do {
+            move = (int) Math.random() * 36;
+        } while (!board.isEmpty(move));
+        return move;
     }
 }

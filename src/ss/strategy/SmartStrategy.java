@@ -4,11 +4,12 @@ import ss.board.Board;
 import ss.Marble;
 
 /**
- * smart strategy, that contains levels of difficulty and AI
+ * smart strategy, that contains levels of difficulty
  * @author janwillem.nijenhuis
  * @version 0.1.0
  */
-public class SmartStrategy implements Strategy{
+public class SmartStrategy implements Strategy {
+    private int level;
     /**
      * gets the name of the strategy
      * maybe add the levels of difficulty to this if they are implemented
@@ -16,12 +17,29 @@ public class SmartStrategy implements Strategy{
      */
     @Override
     public String getName() {
-        return "Smart";
+        return "Smart" + this.level;
+    }
+
+    public void setLevel(int level) {
+        if (level <= 0) {
+            this.level = 0;
+        } else if (level >= 3) {
+            this.level = 3;
+        } else {
+            this.level = level;
+        }
+    }
+
+    public int getLevel() {
+        return this.level;
     }
 
     /**
      * given board and marble it determines a move
-     *
+     * level 0: random strategy
+     * level 1: identify winning moves, random otherwise
+     * level 2: identify winning and losing moves, random otherwise
+     * level 3: AI (yet to be implemented)
      * @param board  the board it plays in
      * @param marble the marbe it plays with
      * @return index of the field

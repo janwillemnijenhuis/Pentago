@@ -18,4 +18,21 @@ public enum Marble {
     public boolean isEqual(Marble other) {
         return this.equals(other);
     }
+
+    /**
+     * function to easily switch between marbles
+     * if marble is black, turn white
+     * if marble is white, turn black
+     * if marble is empty, retain
+     * @return marble
+     */
+    public Marble other() {
+        if (this.equals(Marble.BLACK)) {
+            return Marble.WHITE;
+        } else if (this.equals(Marble.WHITE)) {
+            return Marble.BLACK;
+        } else {
+            return Marble.EMPTY;
+        }
+    }
 }
