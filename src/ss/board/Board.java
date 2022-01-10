@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
- * @version 0.3
+ * @version 0.7
  */
 
 public class Board {
@@ -72,7 +72,7 @@ public class Board {
      * @param col index
      * @return index on board
      */
-    //is this what we want or the opposite?
+
     public int getIndex(int row, int col) {
         return row * 6 + col;
     }
@@ -288,7 +288,9 @@ public class Board {
      * resets the board to initial state
      */
     public void reset() {
-
+        for (int i = 0; i < 36; i++) {
+            setField(i,Marble.EMPTY);
+        }
     }
 
     /**
@@ -297,7 +299,12 @@ public class Board {
      * @param marble the marble to set the field to
      */
     public void setField(int index, Marble marble) {
-
+        if (isField(index) && isEmpty(index)) {
+            fields[getRowCol(index)[0]][getRowCol(index)[1]] = marble;
+        }
+        else {
+            System.out.println("Invalid field location");//we should create an exception for this
+        }
     }
 
     /**
@@ -307,16 +314,36 @@ public class Board {
      * @param marble the marble to set the field to
      */
     public void setField(int row, int col, Marble marble) {
-
+        if (isField(row,col) && isEmpty(row,col)) {
+            fields[row][col] = marble;
+        }
+        else {
+            System.out.println("Invalid field location"); //we should create an exception for this
+        }
     }
 
     /**
      * specifies at which quadrant the index is in
      * @param index given index
-     * @return number of quadrant
+     * @return number of quadrant. returns 5 for invalid input
      */
-    public int getQuadrantIndex(int index){
-        return 0;
+    public int getQuadrantIndex(int index) {
+        int mod = index % 6;
+        if (isField(index) && index < 18) {
+            if (mod == 0 || mod == 1 || mod == 2) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else if (isField(index) && index >= 18) {
+            if (mod == 0 || mod == 1 || mod == 2) {
+                return 2;
+            } else {
+                return 3;
+            }
+        } else {
+            return 5;// maybe an exception here
+        }
     }
 
     /**
@@ -325,20 +352,26 @@ public class Board {
      * @return row and col in quadrant
      */
     public int[] getQuadrantRowCol(int index){
-        return null;
+        return new int[] {(index / 6) % 3,index % 3};
     }
 
     /**
      * transforms the variable allQuadrants to the variable fields
      */
     public void updateFields(){
-
+        for (int i = 0; i < 36; i++) {
+            setField(i,allQuadrants[getQuadrantIndex(i)].getValues()[getQuadrantRowCol(i)[0]][getQuadrantRowCol(i)[1]]);
+        }
     }
 
     /**
      * transforms the variable fields to the variable allQuadrants
      */
     public void updateQuadrants(){
+        for (int i = 0; i < 36; i++) {
+            allQuadrants[getQuadrantIndex(i)].getValues()[getQuadrantRowCol(i)[0]][getQuadrantRowCol(i)[1]] = getField(i);
+        }
+
 
     }
 
@@ -348,6 +381,25 @@ public class Board {
      * @param direction direction of rotation
      */
     public void rotateQuadrant(int numQuad, char direction) {
+       Quadrant tempQuad = allQuadrants[numQuad];
+        if (direction == 'l'){
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    allQuadrants[numQuad].getValues()[2-j][i] = tempQuad.getValues()[i][j];
+                }
+            }
+
+        }
+        else if (direction == 'r') {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    allQuadrants[numQuad].getValues()[j][2-i] = tempQuad.getValues()[i][j];
+                }
+            }
+        }
+        else {
+            System.out.println("Invalid direction"); //we should create an exception for this
+        }
 
     }
 
