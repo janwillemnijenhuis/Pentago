@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
- * @version 0.4
+ * @version 0.5
  */
 
 public class Board {
@@ -350,20 +350,26 @@ public class Board {
      * @return row and col in quadrant
      */
     public int[] getQuadrantRowCol(int index){
-        return null;
+        return new int[] {(index / 6) % 3,index % 3}; //TODO: make sure the numbers are correct
     }
 
     /**
      * transforms the variable allQuadrants to the variable fields
      */
     public void updateFields(){
-
+        for (int i = 0; i < 36; i++) {
+            setField(i,allQuadrants[getQuadrantIndex(i)].getValues()[getQuadrantRowCol(i)[0]][getQuadrantRowCol(i)[1]]);
+        }
     }
 
     /**
      * transforms the variable fields to the variable allQuadrants
      */
     public void updateQuadrants(){
+        for (int i = 0; i < 36; i++) {
+            allQuadrants[getQuadrantIndex(i)].getValues()[getQuadrantRowCol(i)[0]][getQuadrantRowCol(i)[1]] = getField(i);
+        }
+
 
     }
 
