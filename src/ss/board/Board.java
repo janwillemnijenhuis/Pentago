@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
- * @version 0.5
+ * @version 0.6
  */
 
 public class Board {
@@ -379,6 +379,25 @@ public class Board {
      * @param direction direction of rotation
      */
     public void rotateQuadrant(int numQuad, char direction) {
+       Quadrant tempQuad = allQuadrants[numQuad];
+        if (direction == 'l'){
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    allQuadrants[numQuad].getValues()[2-j][i] = tempQuad.getValues()[i][j];
+                }
+            }
+
+        }
+        else if (direction == 'r') {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    allQuadrants[numQuad].getValues()[j][2-i] = tempQuad.getValues()[i][j];
+                }
+            }
+        }
+        else {
+            System.out.println("Invalid direction");
+        }
 
     }
 
