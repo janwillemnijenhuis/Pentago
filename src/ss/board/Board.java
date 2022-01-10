@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
- * @version 0.6
+ * @version 0.7
  */
 
 public class Board {
@@ -72,7 +72,7 @@ public class Board {
      * @param col index
      * @return index on board
      */
-    //is this what we want or the opposite?
+
     public int getIndex(int row, int col) {
         return row * 6 + col;
     }
@@ -288,7 +288,9 @@ public class Board {
      * resets the board to initial state
      */
     public void reset() {
-
+        for (int i = 0; i < 36; i++) {
+            setField(i,Marble.EMPTY);
+        }
     }
 
     /**
@@ -301,7 +303,7 @@ public class Board {
             fields[getRowCol(index)[0]][getRowCol(index)[1]] = marble;
         }
         else {
-            System.out.println("Invalid field location");
+            System.out.println("Invalid field location");//we should create an exception for this
         }
     }
 
@@ -316,14 +318,14 @@ public class Board {
             fields[row][col] = marble;
         }
         else {
-            System.out.println("Invalid field location");
+            System.out.println("Invalid field location"); //we should create an exception for this
         }
     }
 
     /**
      * specifies at which quadrant the index is in
      * @param index given index
-     * @return number of quadrant
+     * @return number of quadrant. returns 5 for invalid input
      */
     public int getQuadrantIndex(int index) {
         int mod = index % 6;
@@ -340,7 +342,7 @@ public class Board {
                 return 3;
             }
         } else {
-            return 5;
+            return 5;// maybe an exception here
         }
     }
 
@@ -350,7 +352,7 @@ public class Board {
      * @return row and col in quadrant
      */
     public int[] getQuadrantRowCol(int index){
-        return new int[] {(index / 6) % 3,index % 3}; //TODO: make sure the numbers are correct
+        return new int[] {(index / 6) % 3,index % 3};
     }
 
     /**
@@ -396,7 +398,7 @@ public class Board {
             }
         }
         else {
-            System.out.println("Invalid direction");
+            System.out.println("Invalid direction"); //we should create an exception for this
         }
 
     }
