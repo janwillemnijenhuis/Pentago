@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
- * @version 0.3
+ * @version 0.4
  */
 
 public class Board {
@@ -297,7 +297,12 @@ public class Board {
      * @param marble the marble to set the field to
      */
     public void setField(int index, Marble marble) {
-
+        if (isField(index) && isEmpty(index)) {
+            fields[getRowCol(index)[0]][getRowCol(index)[1]] = marble;
+        }
+        else {
+            System.out.println("Invalid field location");
+        }
     }
 
     /**
@@ -307,7 +312,12 @@ public class Board {
      * @param marble the marble to set the field to
      */
     public void setField(int row, int col, Marble marble) {
-
+        if (isField(row,col) && isEmpty(row,col)) {
+            fields[row][col] = marble;
+        }
+        else {
+            System.out.println("Invalid field location");
+        }
     }
 
     /**
@@ -315,8 +325,23 @@ public class Board {
      * @param index given index
      * @return number of quadrant
      */
-    public int getQuadrantIndex(int index){
-        return 0;
+    public int getQuadrantIndex(int index) {
+        int mod = index % 6;
+        if (isField(index) && index < 18) {
+            if (mod == 0 || mod == 1 || mod == 2) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else if (isField(index) && index >= 18) {
+            if (mod == 0 || mod == 1 || mod == 2) {
+                return 2;
+            } else {
+                return 3;
+            }
+        } else {
+            return 5;
+        }
     }
 
     /**
