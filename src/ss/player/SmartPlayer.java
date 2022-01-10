@@ -15,17 +15,18 @@ import java.io.Reader;
  * @version 0.1.0
  */
 public class SmartPlayer extends Player{
-
-    private Strategy strategy;
+    private int level;
+    private SmartStrategy strategy;
     /**
      * creates a player with given name and marble
      *
      * @param name   given name
      * @param marble given marble
      */
-    public SmartPlayer(String name, Marble marble) {
+    public SmartPlayer(String name, Marble marble, int level) {
         super(name, marble);
         this.strategy = new SmartStrategy();
+        this.strategy.setLevel(level);
     }
 
     /**
