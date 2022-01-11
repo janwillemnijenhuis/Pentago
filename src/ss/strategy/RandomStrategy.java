@@ -1,5 +1,6 @@
 package ss.strategy;
 
+import ss.Tuple3;
 import ss.board.Board;
 import ss.Marble;
 
@@ -27,11 +28,18 @@ public class RandomStrategy implements Strategy{
      * @return index of the field
      */
     @Override
-    public int determineMove(Board board, Marble marble) {
-        int move;
+    public Tuple3<Integer, Integer, Character> determineMove(Board board, Marble marble) {
+        int choice; int quadNumber; char direction;
         do {
-            move = (int) Math.random() * 36;
-        } while (!board.isEmpty(move));
-        return move;
+            choice = (int) (Math.random() * 36);
+            quadNumber = (int) (Math.random() * 4);
+            if (Math.random() < 0.5) {
+                direction = 'w';
+            } else {
+                direction = 'a';
+            }
+        } while (!board.isEmpty(choice) && !board.isQuad(quadNumber) && board.isDir(direction));
+        return new Tuple3<>(choice, quadNumber, direction);
     }
+
 }

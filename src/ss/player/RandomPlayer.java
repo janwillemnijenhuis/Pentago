@@ -1,5 +1,6 @@
 package ss.player;
 
+import ss.Tuple3;
 import ss.board.Board;
 import ss.Marble;
 import ss.strategy.RandomStrategy;
@@ -31,8 +32,8 @@ public class RandomPlayer extends Player {
      * should not be used in the context of a randomplayer
      */
     @Override
-    public int determineMove(Board board, Reader in, PrintStream out) {
-        return -1;
+    public Tuple3<Integer, Integer, Character> determineMove(Board board, Reader in, PrintStream out) {
+        return new Tuple3<>(-1, -1, 'n');
     }
 
     /**
@@ -42,7 +43,7 @@ public class RandomPlayer extends Player {
      * @return the index of the field, -1 if it is an invalid move
      */
     @Override
-    public int determineMove(Board board) {
+    public Tuple3<Integer, Integer, Character> determineMove(Board board) {
         return strategy.determineMove(board, this.getMarble());
     }
 }

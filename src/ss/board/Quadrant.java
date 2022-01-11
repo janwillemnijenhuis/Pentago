@@ -5,7 +5,7 @@ import ss.Marble;
 public class Quadrant {
 
     private int index;
-    private Marble[][] values;
+    private Marble[][] values = new Marble[3][3];
     private final int DIM = 3;
 
     /**
@@ -13,7 +13,12 @@ public class Quadrant {
      * @param index the number of the quadrant
      */
     public Quadrant(int index){
-
+        this.index = index;
+        for (int i = 0; i < DIM; i++) {
+            for (int j = 0; j < DIM; j++) {
+                values[i][j] = Marble.EMPTY;
+            }
+        }
     }
 
     /**

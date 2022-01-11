@@ -1,5 +1,6 @@
 package ss.strategy;
 
+import ss.Tuple3;
 import ss.board.Board;
 import ss.Marble;
 
@@ -18,6 +19,11 @@ public class SmartStrategy implements Strategy {
     @Override
     public String getName() {
         return "Smart" + this.level;
+    }
+
+    @Override
+    public Tuple3<Integer, Integer, Character> determineMove(Board board, Marble marble) {
+        return null;
     }
 
     public void setLevel(int level) {
@@ -44,8 +50,5 @@ public class SmartStrategy implements Strategy {
      * @param marble the marbe it plays with
      * @return index of the field
      */
-    @Override
-    public int determineMove(Board board, Marble marble) {
-        return 0;
-    }
+
 }

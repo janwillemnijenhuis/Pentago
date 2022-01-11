@@ -1,5 +1,6 @@
 package ss.strategy;
 
+import ss.Tuple3;
 import ss.board.Board;
 import ss.Marble;
 
@@ -21,6 +22,6 @@ public interface Strategy {
      * @param marble the marbe it plays with
      * @return index of the field
      */
-    int determineMove(Board board, Marble marble);
+    Tuple3<Integer, Integer, Character> determineMove(Board board, Marble marble);
 
 }

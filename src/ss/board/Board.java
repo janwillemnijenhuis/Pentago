@@ -17,6 +17,16 @@ public class Board {
     @*/
 
     private final int DIM = 6;
+    private static final String DELIM = "          ";
+    private static final String[] NUMBERING = {
+            " 0  | 1  | 2  | 3  | 4  | 5  ", "-----+----+----+----+----+-----",
+            " 6  | 7  | 8  | 9  | 10 | 11 ", "-----+----+----+----+----+-----",
+            " 12 | 13 | 14 | 15 | 16 | 17 ", "-----+----+----+----+----+-----",
+            " 18 | 19 | 20 | 21 | 22 | 23 ", "-----+----+----+----+----+-----",
+            " 24 | 25 | 26 | 27 | 28 | 29 ", "-----+----+----+----+----+-----",
+            " 30 | 31 | 32 | 33 | 34 | 35 ", "-----+----+----+----+----+-----"};
+    private static final String LINE = NUMBERING[1];
+
     private Marble[][] fields = new Marble[DIM][DIM];
     private Marble[][] quadrant;
     private Quadrant[] allQuadrants;
@@ -274,17 +284,6 @@ public class Board {
     }
 
     /**
-     * prints the string representation of the board
-     * it shows the numbering of the fields and quadrants
-     * we make one board which represents both the numbers and placed
-     * marbles at the same time
-     * @return String representation of the current board
-     */
-    public String toString() {
-        return null;
-    }
-
-    /**
      * resets the board to initial state
      */
     public void reset() {
@@ -382,7 +381,7 @@ public class Board {
      */
     public void rotateQuadrant(int numQuad, char direction) {
        Quadrant tempQuad = allQuadrants[numQuad];
-        if (direction == 'l'){
+        if (direction == 'w'){
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     allQuadrants[numQuad].getValues()[2-j][i] = tempQuad.getValues()[i][j];
@@ -390,7 +389,7 @@ public class Board {
             }
 
         }
-        else if (direction == 'r') {
+        else if (direction == 'a') {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     allQuadrants[numQuad].getValues()[j][2-i] = tempQuad.getValues()[i][j];
@@ -410,4 +409,49 @@ public class Board {
         return this.DIM;
     }
 
+    /**
+     * check if valid quadrant
+     * @param quadNumber
+     * @return true if between 0 and 3, false otherwise
+     */
+    public boolean isQuad(int quadNumber) {return quadNumber >= 0 && quadNumber <= 3;}
+
+    public boolean isDir(char direction) {return direction == 'w' || direction == 'a';}
+
+
+    /**
+     * prints the string representation of the board
+     * it shows the numbering of the fields and quadrants
+     * we make one board which represents both the numbers and placed
+     * marbles at the same time
+     * @return String representation of the current board
+     */
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < DIM; i++) {
+            String row = "";
+            if (i == 0) {
+                s = s + new String(new char[30]).replace('\0', ' ') + DELIM + "0";
+                s = s + new String(new char[31]).replace('\0', ' ') + "1\n";
+                s = s + LINE + DELIM + LINE + "\n";
+            }
+            for (int j = 0; j < DIM; j++) {
+                row = row + "  " + getField(i, j).toString().substring(0, 1).replace("E", " ") + " ";
+                if (j < DIM - 1) {
+                    row = row + "|";
+                }
+            }
+            s = s + "|" + row + "|" + DELIM + "|" + NUMBERING[i * 2] + "|";
+            if (i < DIM - 1) {
+                s = s + "\n" + LINE + DELIM + LINE + "\n";
+            }
+            if (i == DIM - 1) {
+                s = s + "\n"+ LINE + DELIM + LINE + "\n";
+                s = s + new String(new char[30]).replace('\0', ' ') + DELIM + "2";
+                s = s + new String(new char[31]).replace('\0', ' ') + "3\n";
+            }
+
+        }
+        return s;
+    }
 }

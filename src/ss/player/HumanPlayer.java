@@ -1,5 +1,6 @@
 package ss.player;
 
+import ss.Tuple3;
 import ss.board.Board;
 import ss.Marble;
 
@@ -29,22 +30,23 @@ public class HumanPlayer extends Player {
      * @return the index of the field, -1 if this is an invalid move
      */
     @Override
-    public int determineMove(Board board, Reader in, PrintStream out) {
+    public Tuple3<Integer, Integer, Character> determineMove(Board board, Reader in, PrintStream out) {
         Scanner sc = new Scanner(in);
         String prompt = "> Player " + getName() + " (" + getMarble() +"): What is your choice? ";
-        out.println(prompt);
-        int choice = sc.nextInt();
-        boolean valid = board.isField(choice) && board.isEmpty(choice);
-        while (!valid) {
-            out.println("ERROR: Invalid number - Field is occupied or move is not on the board\n" + prompt);
+        int choice; int quadNumber; char direction;
+        do {
+            out.println(prompt);
             choice = sc.nextInt();
-            valid = board.isField(choice) && board.isEmpty(choice);
-        }
-        return choice;
+            out.println("And which quadrant do you want to move?");
+            quadNumber = sc.nextInt();
+            out.println("With the clock (w) or against the clock (a)?");
+            direction = sc.next().charAt(0);
+        } while (board.isField(choice) && board.isEmpty(choice) && board.isQuad(quadNumber) && board.isDir(direction));
+        return new Tuple3<>(choice, quadNumber, direction);
     }
 
     @Override
-    public int determineMove(Board board) {
-        return -1;
+    public Tuple3<Integer, Integer, Character> determineMove(Board board) {
+        return new Tuple3<>(-1, -1, 'n');
     }
 }

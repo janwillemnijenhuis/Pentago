@@ -1,6 +1,7 @@
 package ss.player;
 
 import ss.Marble;
+import ss.Tuple3;
 import ss.board.Board;
 
 import java.io.InputStream;
@@ -55,14 +56,14 @@ public abstract class Player {
      * @param board the board the player plays in
      * @return the index of the field, -1 if it is an invalid move
      */
-    public abstract int determineMove(Board board, Reader in, PrintStream out);
+    public abstract Tuple3<Integer, Integer, Character> determineMove(Board board, Reader in, PrintStream out);
 
     /**
      * determines a move without IO
      * @param board the current board
      * @return the index to move
      */
-    public abstract int determineMove(Board board);
+    public abstract Tuple3<Integer, Integer, Character> determineMove(Board board);
 
     /**
      * places the marble on the board
