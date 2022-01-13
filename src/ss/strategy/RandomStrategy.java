@@ -3,6 +3,7 @@ package ss.strategy;
 import ss.Tuple3;
 import ss.board.Board;
 import ss.Marble;
+import java.lang.Math;
 
 /**
  * random strategy to place a marble on the board
@@ -38,7 +39,7 @@ public class RandomStrategy implements Strategy{
             } else {
                 direction = 'a';
             }
-        } while (!board.isEmpty(choice) && !board.isQuad(quadNumber) && board.isDir(direction));
+        } while (!board.isEmpty(choice));
         return new Tuple3<>(choice, quadNumber, direction);
     }
 

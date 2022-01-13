@@ -57,7 +57,7 @@ public class Game {
      */
     private void play(){
         Tuple3<Integer, Integer, Character> move;
-        update();
+        this.update();
         int playerMove = 0;
         while (!this.board.hasWinner() && !this.board.isFull()) {
             move = players[playerMove].determineMove(board);

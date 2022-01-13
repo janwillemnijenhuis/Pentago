@@ -14,10 +14,19 @@ public class Pentago {
         Player[] players = new Player[2];
 
         Marble[] marbles = {Marble.BLACK, Marble.WHITE};
-        //String[] names = checkArgs(args);
+        String[] names = checkArgs(args);
 
-        players[0] = new HumanPlayer("Player 1", marbles[0]);
-        players[1] = new HumanPlayer("Player 2", marbles[1]);
+        for (int i = 0; i < names.length; i++) {
+            if (names[i].equals("-R")) {
+                players[i] = new RandomPlayer("Player " + i, marbles[i]);
+            } else {
+                players[i] = new HumanPlayer(names[i], marbles[i]);
+            }
+        }
+
+
+//        players[0] = new HumanPlayer("Player 1", marbles[0]);
+//        players[1] = new HumanPlayer("Player 2", marbles[1]);
 
 //        players[0] = new RandomPlayer("1",marbles[0]);
 //        players[1] = new RandomPlayer("2",marbles[1]);
