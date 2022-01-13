@@ -28,13 +28,7 @@ public class RandomPlayer extends Player {
         this.strategy = new RandomStrategy();
     }
 
-    /**
-     * should not be used in the context of a randomplayer
-     */
-    @Override
-    public Tuple3<Integer, Integer, Character> determineMove(Board board, Reader in, PrintStream out) {
-        return new Tuple3<>(-1, -1, 'n');
-    }
+
 
     /**
      * determines a move for the plyer

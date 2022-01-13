@@ -12,9 +12,9 @@ import java.util.Arrays;
 
 public class Board {
 
-    /*@ private invariant fields.length == DIM*DIM;
-        private invariant (\forall int i, j; (i >= 0 && i < DIM) && (j>=0 && j<DIM); fields[i][j] == Marble.EMPTY || fields[i] == Marble.BLACK || fields[i] == Marble.WHITE);
-    @*/
+//    /*@ private invariant fields.length == DIM*DIM;
+//        private invariant (\forall int i, j; (i >= 0 && i < DIM) && (j>=0 && j<DIM); fields[i][j] == Marble.EMPTY || fields[i] == Marble.BLACK || fields[i] == Marble.WHITE);
+//    @*/
 
     private final int DIM = 6;
     private static final String DELIM = "          ";
@@ -29,7 +29,7 @@ public class Board {
 
     private Marble[][] fields = new Marble[DIM][DIM];
     private Marble[][] quadrant;
-    private Quadrant[] allQuadrants;
+    private Quadrant[] allQuadrants = new Quadrant[4];
     private Marble[][] winningWhiteRows = {{Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE},
             {Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.BLACK},
             {Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.WHITE,Marble.EMPTY},
@@ -53,7 +53,9 @@ public class Board {
             for (int j = 0; j < DIM; j++) {
                 this.fields[i][j] = Marble.EMPTY;
             }
-
+        }
+        for (int j = 0; j < 4; j++) {
+            this.allQuadrants[j] = new Quadrant(j);
         }
 
     }
@@ -72,6 +74,10 @@ public class Board {
             }
 
         }
+        for (int j = 0; j < 4; j++) {
+            boardCopy.allQuadrants[j] = this.allQuadrants[j].deepCopy();
+        }
+
         return boardCopy;
     }
 
@@ -306,6 +312,15 @@ public class Board {
         }
     }
 
+    public void updateField(int index, Marble marble) {
+        if (isField(index)) {
+            fields[getRowCol(index)[0]][getRowCol(index)[1]] = marble;
+        }
+        else {
+            System.out.println("Invalid field location");//we should create an exception for this
+        }
+    }
+
     /**
      * sets field at this row,col pair to this marble
      * @param row index
@@ -359,7 +374,7 @@ public class Board {
      */
     public void updateFields(){
         for (int i = 0; i < 36; i++) {
-            setField(i,allQuadrants[getQuadrantIndex(i)].getValues()[getQuadrantRowCol(i)[0]][getQuadrantRowCol(i)[1]]);
+            updateField(i,allQuadrants[getQuadrantIndex(i)].getValues()[getQuadrantRowCol(i)[0]][getQuadrantRowCol(i)[1]]);
         }
     }
 
@@ -380,11 +395,12 @@ public class Board {
      * @param direction direction of rotation
      */
     public void rotateQuadrant(int numQuad, char direction) {
-       Quadrant tempQuad = allQuadrants[numQuad];
+        Board boardCopy = this.deepCopy();
+        Quadrant tempQuad = boardCopy.allQuadrants[numQuad];
         if (direction == 'w'){
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    allQuadrants[numQuad].getValues()[2-j][i] = tempQuad.getValues()[i][j];
+                    this.allQuadrants[numQuad].setValue(i, j, tempQuad.getValues()[2-j][i]);
                 }
             }
 
@@ -392,7 +408,7 @@ public class Board {
         else if (direction == 'a') {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    allQuadrants[numQuad].getValues()[j][2-i] = tempQuad.getValues()[i][j];
+                    this.allQuadrants[numQuad].setValue(i, j, tempQuad.getValues()[j][2-i]);
                 }
             }
         }
@@ -416,7 +432,7 @@ public class Board {
      */
     public boolean isQuad(int quadNumber) {return quadNumber >= 0 && quadNumber <= 3;}
 
-    public boolean isDir(char direction) {return direction == 'w' || direction == 'a';}
+    public boolean isDir(char direction) {return (direction == 'w' || direction == 'a');}
 
 
     /**

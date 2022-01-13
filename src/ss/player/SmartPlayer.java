@@ -30,13 +30,6 @@ public class SmartPlayer extends Player{
         this.strategy.setLevel(level);
     }
 
-    /**
-     * should not be used for a smart player
-     */
-    @Override
-    public Tuple3<Integer, Integer, Character> determineMove(Board board, Reader in, PrintStream out) {
-        return new Tuple3<>(1,1,'n');
-    }
 
     /**
      * determines a move for the plyer

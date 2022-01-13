@@ -21,6 +21,16 @@ public class Quadrant {
         }
     }
 
+    public Quadrant deepCopy() {
+        Quadrant deepCopy = new Quadrant(this.index);
+        for (int i = 0; i < DIM; i++) {
+            for (int j = 0; j < DIM; j++) {
+                deepCopy.values[i][j] = this.values[i][j];
+            }
+        }
+        return deepCopy;
+    }
+
     /**
      * gives the values of the quadrant
      * @return the values
@@ -35,8 +45,8 @@ public class Quadrant {
      * @param row index
      * @param marble value to be set
      */
-    public void setValue(int col, int row, Marble marble) {
-
+    public void setValue(int row, int col, Marble marble) {
+        this.values[row][col] = marble;
     }
 
     /**

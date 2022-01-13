@@ -52,13 +52,6 @@ public abstract class Player {
     }
 
     /**
-     * determines a move for the player with IO
-     * @param board the board the player plays in
-     * @return the index of the field, -1 if it is an invalid move
-     */
-    public abstract Tuple3<Integer, Integer, Character> determineMove(Board board, Reader in, PrintStream out);
-
-    /**
      * determines a move without IO
      * @param board the current board
      * @return the index to move
