@@ -293,9 +293,12 @@ public class Board {
      * resets the board to initial state
      */
     public void reset() {
-        for (int i = 0; i < 36; i++) {
-            setField(i,Marble.EMPTY);
+        for (int i = 0; i < DIM; i++) {
+            for (int j = 0; j < DIM; j++) {
+                fields[i][j] = Marble.EMPTY;
+            }
         }
+        this.updateQuadrants();
     }
 
     /**
@@ -307,17 +310,11 @@ public class Board {
         if (isField(index) && isEmpty(index)) {
             fields[getRowCol(index)[0]][getRowCol(index)[1]] = marble;
         }
-        else {
-            System.out.println("Invalid field location");//we should create an exception for this
-        }
     }
 
     public void updateField(int index, Marble marble) {
         if (isField(index)) {
             fields[getRowCol(index)[0]][getRowCol(index)[1]] = marble;
-        }
-        else {
-            System.out.println("Invalid field location");//we should create an exception for this
         }
     }
 
@@ -330,9 +327,6 @@ public class Board {
     public void setField(int row, int col, Marble marble) {
         if (isField(row,col) && isEmpty(row,col)) {
             fields[row][col] = marble;
-        }
-        else {
-            System.out.println("Invalid field location"); //we should create an exception for this
         }
     }
 

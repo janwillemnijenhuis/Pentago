@@ -5,28 +5,32 @@ import ss.player.Player;
 import ss.utils.TextIO;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
-public class Game {
-
+public class ServerGame {
 
     private final int numPlayers = 2;
     private Board board;
     private Player[] players;
     private int currentPlayer;
+    private BufferedReader in;
+    private PrintWriter out;
 
     /**
      * constructs the game
      * @param player1
      * @param player2
      */
-    public Game(Player player1,Player player2){
-        board = new Board();
-        players = new Player[numPlayers];
-        players[0] = player1;
-        players[1] = player2;
-        currentPlayer = 0;
+    public ServerGame(Player player1,Player player2, BufferedReader in, PrintWriter out){
+        this.board = new Board();
+        this.players = new Player[numPlayers];
+        this.players[0] = player1;
+        this.players[1] = player2;
+        this.currentPlayer = 0;
+        this.in = in;
+        this.out = out;
     }
 
     /**
@@ -38,18 +42,18 @@ public class Game {
         while (continueGame) {
             reset();
             play();
-            System.out.println("\n> Play another time? (y/n)?");
+            this.out.println("\n> Play another time? (y/n)?");
             continueGame = TextIO.getBoolean();
         }
-        System.out.println("Thank you for playing with us!");
+        this.out.println("Thank you for playing with us!");
     }
 
     /**
      * resets the game
      */
     private void reset(){
-        currentPlayer = 0;
-        board.reset();
+        this.currentPlayer = 0;
+        this.board.reset();
     }
 
     /**
@@ -76,7 +80,7 @@ public class Game {
      * prints the updated board
      */
     private void update(){
-        System.out.println("\ncurrent game situation: \n\n" + board.toString()
+        this.out.println("\ncurrent game situation: \n\n" + this.board.toString()
                 + "\n");
     }
 
@@ -87,11 +91,10 @@ public class Game {
         if (board.hasWinner()) {
             Player winner = board.isWinner(players[0].getMarble()) ? players[0]
                     : players[1];
-            System.out.println("Player " + winner.getName() + " ("
+            this.out.println("Player " + winner.getName() + " ("
                     + winner.getMarble().toString() + ") has won!");
         } else {
-            System.out.println("Draw. There is no winner!");
+            this.out.println("Draw. There is no winner!");
         }
     }
-
 }
