@@ -5,6 +5,7 @@ import ss.Marble;
 import ss.ServerGame;
 import ss.player.HumanPlayer;
 import ss.player.Player;
+import ss.player.ServerHumanPlayer;
 
 import java.io.*;
 import java.net.Socket;
@@ -38,22 +39,32 @@ public class GameHandler implements Runnable {
     public void run() {
         String line = null;
         try {
-            collectPlayers();
             var pr1 = new PipedReader();
             var pw1 = new PipedWriter(pr1);
-            this.br = new BufferedReader(pr1);
-            ServerGame game = new ServerGame(this.players[0], this.players[1], this.br, new PrintWriter(System.out, true));
-            game.start();
+            var pr2 = new PipedReader();
+            var pw2 = new PipedWriter(pr2);
+            this.br = new BufferedReader(pr2);
+            this.pw = new PrintWriter(pw1, true);
+            collectPlayers();
+            ServerGame game = new ServerGame(this.players[0], this.players[1], pr1, pw2);
+            Thread t = new Thread(game);
+            t.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        int playerMove = 1;
         while (true) {
             try {
-                if (!((line = this.br.readLine()) != null)) break;
+                line = this.br.readLine();
+                if (line == null) {
+                    break;
+                } else {
+                    this.out[0].println(line);
+                    this.out[1].println(line);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -63,7 +74,7 @@ public class GameHandler implements Runnable {
             try {
                 this.out[i].println("What is your name:");
                 username = this.in[i].readLine();
-                this.players[i] = new HumanPlayer(username, this.marbles[i]);
+                this.players[i] = new ServerHumanPlayer(username, this.marbles[i], this.in[i], this.out[i]);
                 this.out[i].println("Welcome, " + username + ". You'll play with " + this.marbles[i].toString());
             } catch (IOException e) {
                 closeGame();
