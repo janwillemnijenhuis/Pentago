@@ -11,18 +11,40 @@ import java.util.ArrayList;
 
 public class PentagoServer implements Server, Runnable {
     private int PORT;
+    private InetAddress address = null;
     private ServerSocket ss;
     private Thread t;
     private ArrayList<GameHandler> games = new ArrayList<>();
     private Socket bufSock = null;
 
-    public PentagoServer(int port) {
-        this.PORT = port;
+    public static void main(String[] args) {
+        String address = null;
+        int port = 0;
+        PentagoServer server = new PentagoServer();
+        do {
+            System.out.println("Please provide a valid IP address:");
+            address = TextIO.getlnString();
+            System.out.println("Please provide a valid port number:");
+            port = TextIO.getlnInt();
+        } while (!server.setServerAddress(address) || !server.setValidPort(port));
+        server.start();
     }
 
-    public static void main(String[] args) {
-        PentagoServer server = new PentagoServer(8080);
-        server.start();
+    public boolean setServerAddress(String address) {
+        try {
+            this.address = InetAddress.getByName(address);
+        } catch (UnknownHostException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean setValidPort(int port) {
+        if (port >= 0 && port <= Math.pow(2, 16) - 1) {
+            this.PORT = port;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -52,8 +74,8 @@ public class PentagoServer implements Server, Runnable {
     @Override
     public void start() {
         try {
-            this.ss = new ServerSocket(this.PORT);
-            System.out.println("Starting server at port: " + this.ss.getLocalPort());
+            this.ss = new ServerSocket(this.PORT, 50, this.address);
+            System.out.println("Starting server at IP " + this.ss.getInetAddress() + " and port: " + this.ss.getLocalPort());
         } catch (IOException e) {
             e.printStackTrace();
         }
