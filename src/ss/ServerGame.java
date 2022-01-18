@@ -40,7 +40,11 @@ public class ServerGame implements Runnable {
             reset();
             play();
             this.out.println("\n> Play another time? (y/n)?");
-            continueGame = TextIO.getBoolean();
+            try {
+                continueGame = this.in.readLine().equals("y");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         this.out.println("Thank you for playing with us!");
     }
@@ -69,7 +73,7 @@ public class ServerGame implements Runnable {
             this.update();
             playerMove = (playerMove + 1) % 2;
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

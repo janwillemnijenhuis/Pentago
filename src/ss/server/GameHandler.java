@@ -5,6 +5,7 @@ import ss.Marble;
 import ss.ServerGame;
 import ss.player.HumanPlayer;
 import ss.player.Player;
+import ss.player.RandomPlayer;
 import ss.player.ServerHumanPlayer;
 
 import java.io.*;
@@ -52,7 +53,7 @@ public class GameHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int playerMove = 1;
+
         while (true) {
             try {
                 line = this.br.readLine();
@@ -61,6 +62,15 @@ public class GameHandler implements Runnable {
                 } else {
                     this.out[0].println(line);
                     this.out[1].println(line);
+                    if (line.contains("(y/n)")) {
+                        String answer1 = this.in[0].readLine();
+                        String answer2 = this.in[1].readLine();
+                        if (answer1.charAt(0) == 'y' && answer2.charAt(0) == 'y') {
+                            this.pw.println("y");
+                        } else {
+                            this.pw.println("n");
+                        }
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -74,8 +84,12 @@ public class GameHandler implements Runnable {
             try {
                 this.out[i].println("What is your name:");
                 username = this.in[i].readLine();
-                this.players[i] = new ServerHumanPlayer(username, this.marbles[i], this.in[i], this.out[i]);
-                this.out[i].println("Welcome, " + username + ". You'll play with " + this.marbles[i].toString());
+                if (username.equals("-R")) {
+                    this.players[i] = new RandomPlayer("Player " + i, this.marbles[i]);
+                } else {
+                    this.players[i] = new ServerHumanPlayer(username, this.marbles[i], this.in[i], this.out[i]);
+                    this.out[i].println("Welcome, " + username + ". You'll play with " + this.marbles[i].toString());
+                }
             } catch (IOException e) {
                 closeGame();
             }
