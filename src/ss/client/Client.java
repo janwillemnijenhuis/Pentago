@@ -47,6 +47,9 @@ public class Client implements ClientPlayer, Runnable {
                 } else if (line.contains("What is your name:")) {
                     this.pw.println(line);
                     sendUsername(this.br.readLine());
+                } else if (line.contains("?")) {
+                    this.pw.println(line);
+                    this.out.println(this.br.readLine());
                 } else {
                     this.pw.println(line);
                 }

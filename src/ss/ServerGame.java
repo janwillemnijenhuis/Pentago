@@ -4,12 +4,9 @@ import ss.board.Board;
 import ss.player.Player;
 import ss.utils.TextIO;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 
-public class ServerGame {
+public class ServerGame implements Runnable {
 
     private final int numPlayers = 2;
     private Board board;
@@ -23,21 +20,21 @@ public class ServerGame {
      * @param player1
      * @param player2
      */
-    public ServerGame(Player player1,Player player2, BufferedReader in, PrintWriter out){
+    public ServerGame(Player player1, Player player2, Reader in, Writer out){
         this.board = new Board();
         this.players = new Player[numPlayers];
         this.players[0] = player1;
         this.players[1] = player2;
         this.currentPlayer = 0;
-        this.in = in;
-        this.out = out;
+        this.in = new BufferedReader(in);
+        this.out = new PrintWriter(out, true);
     }
 
     /**
      * starts the game
      * calls all the other methods
      */
-    public void start(){
+    public void run(){
         boolean continueGame = true;
         while (continueGame) {
             reset();
@@ -67,11 +64,15 @@ public class ServerGame {
             move = players[playerMove].determineMove(board);
             this.board.setField(move.getFirst(), players[playerMove].getMarble());
             this.board.updateQuadrants();
-            this.update();
             this.board.rotateQuadrant(move.getSecond(), move.getThird());
             this.board.updateFields();
-            playerMove = (playerMove + 1) % 2;
             this.update();
+            playerMove = (playerMove + 1) % 2;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         printResult();
     }
@@ -80,7 +81,7 @@ public class ServerGame {
      * prints the updated board
      */
     private void update(){
-        this.out.println("\ncurrent game situation: \n\n" + this.board.toString()
+        this.out.println("\ncurrent game situation: \n" + this.board.toString()
                 + "\n");
     }
 
