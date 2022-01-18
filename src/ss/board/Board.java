@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Board for the Pentago game. UT Software Systems final project
  * @author andreas.kakotaritis
- * @version 0.7
+ * @version 0.8
  */
 
 public class Board {
@@ -16,6 +16,7 @@ public class Board {
 //        private invariant (\forall int i, j; (i >= 0 && i < DIM) && (j>=0 && j<DIM); fields[i][j] == Marble.EMPTY || fields[i] == Marble.BLACK || fields[i] == Marble.WHITE);
 //    @*/
 
+    public static final String TEXT_YELLOW = "\u001B[33m";
     private final int DIM = 6;
     private static final String DELIM = "          ";
     private static final String[] NUMBERING = {
@@ -41,6 +42,10 @@ public class Board {
             {Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.EMPTY},
             {Marble.WHITE,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK},
             {Marble.EMPTY,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK,Marble.BLACK}};
+
+    private int winRow = 7; //should be initialized to an impossible value
+    private int winCol = 7;
+    private int winDiag = 10;
 
 
     /**
@@ -202,6 +207,7 @@ public class Board {
             for (int i = 0; i < DIM; i++) {
                 for (int j = 0; j < 5; j++) {
                     if ((Arrays.equals(fields[i], winningBlackRows[j]))) {
+                        winRow = i;
                         return true;
                     }
                 }
@@ -211,6 +217,7 @@ public class Board {
             for (int i = 0; i < DIM; i++) {
                 for (int j = 0; j < 5; j++) {
                     if ((Arrays.equals(fields[i], winningWhiteRows[j]))) {
+                        winRow = i;
                         return true;
                     }
                 }
@@ -230,6 +237,7 @@ public class Board {
         for (int i = 0; i < DIM; i++) {
             if((fields[0][i] == marble && fields[0][i] == fields[1][i] && fields[0][i] == fields[2][i] && fields[0][i] == fields[3][i] && fields[0][i] == fields[4][i])||
                     (fields[5][i] == marble && fields[5][i] == fields[1][i] && fields[5][i] == fields[2][i] && fields[5][i] == fields[3][i] && fields[5][i] == fields[4][i])) {
+                winCol = i;
                 return true;
             }
         }
@@ -244,16 +252,31 @@ public class Board {
      */
     public boolean hasDiagonal(Marble marble) {
 
-            if ((fields[0][1] == marble && fields[1][2] == marble && fields[2][3] == marble && fields[3][4] == marble && fields[4][5] == marble)||
-                    (fields[0][0] == marble && fields[1][1] == marble && fields[2][2] == marble && fields[3][3] == marble && fields[4][4] == marble)||
-                    (fields[5][5] == marble && fields[1][1] == marble && fields[2][2] == marble && fields[3][3] == marble && fields[4][4] == marble) ||
-                    (fields[1][0] == marble && fields[2][1] == marble && fields[3][2] == marble && fields[4][3] == marble && fields[5][4] == marble) ||
-                    (fields[0][4] == marble && fields[1][3] == marble && fields[3][2] == marble && fields[3][1] == marble && fields[4][0] == marble)||
-                    (fields[0][5] == marble && fields[1][4] == marble && fields[2][3] == marble && fields[3][2] == marble && fields[4][1] == marble) ||
-                    (fields[5][0] == marble && fields[1][4] == marble && fields[2][3] == marble && fields[3][2] == marble && fields[4][1] == marble) ||
-                    (fields[1][5] == marble && fields[2][4] == marble && fields[3][3] == marble && fields[4][2] == marble && fields[5][1] == marble)) {
-                return true;
+        for (int i = 2; i < 4; i++) {
+            for (int j = 2; j < 4; j++) {
+                if (fields[i][j] == marble && fields[i-1][j+1] == marble && fields[i-2][j+2] == marble && fields[i+1][j-1] == marble && fields[i+2][j-2] == marble ) {
+                    winDiag = (2*i)-j;
+                    return true;
+                }
+                else if (fields[i][j] == marble && fields[i-1][j-1] == marble && fields[i-2][j-2] == marble && fields[i+1][j+1] == marble && fields[i+2][j+2] == marble ) {
+                    winDiag = i-(2*j);
+                    return true;
+                }
+
             }
+
+        }
+
+//            if ((fields[0][1] == marble && fields[1][2] == marble && fields[2][3] == marble && fields[3][4] == marble && fields[4][5] == marble)||
+//                    (fields[0][0] == marble && fields[1][1] == marble && fields[2][2] == marble && fields[3][3] == marble && fields[4][4] == marble)||
+//                    (fields[5][5] == marble && fields[1][1] == marble && fields[2][2] == marble && fields[3][3] == marble && fields[4][4] == marble) ||
+//                    (fields[1][0] == marble && fields[2][1] == marble && fields[3][2] == marble && fields[4][3] == marble && fields[5][4] == marble) ||
+//                    (fields[0][4] == marble && fields[1][3] == marble && fields[3][2] == marble && fields[3][1] == marble && fields[4][0] == marble)||
+//                    (fields[0][5] == marble && fields[1][4] == marble && fields[2][3] == marble && fields[3][2] == marble && fields[4][1] == marble) ||
+//                    (fields[5][0] == marble && fields[1][4] == marble && fields[2][3] == marble && fields[3][2] == marble && fields[4][1] == marble) ||
+//                    (fields[1][5] == marble && fields[2][4] == marble && fields[3][3] == marble && fields[4][2] == marble && fields[5][1] == marble)) {
+//                return true;
+//            }
 
 
         return false;
