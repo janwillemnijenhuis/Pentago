@@ -20,7 +20,7 @@ public class GameHandler implements Runnable {
     private BufferedReader br;
     private PrintWriter pw;
     private Marble[] marbles = { Marble.BLACK, Marble.WHITE };
-    public boolean inGame = false;
+    public boolean inGame = true;
 
     public GameHandler(Socket sock1, Socket sock2, Server server) {
         this.server = server;
@@ -54,7 +54,7 @@ public class GameHandler implements Runnable {
             e.printStackTrace();
         }
 
-        while (true) {
+        while (this.inGame) {
             try {
                 line = this.br.readLine();
                 if (line == null) {
@@ -70,6 +70,11 @@ public class GameHandler implements Runnable {
                         } else {
                             this.pw.println("n");
                         }
+                    } else if (line.equals("Thank you for playing with us!")) {
+                        this.out[0].println("quit");
+                        this.out[1].println("quit");
+                        this.inGame = false;
+                        closeGame();
                     }
                 }
             } catch (IOException e) {
@@ -94,10 +99,6 @@ public class GameHandler implements Runnable {
                 closeGame();
             }
         }
-    }
-
-    public void startGame() {
-
     }
 
     public void closeGame() {

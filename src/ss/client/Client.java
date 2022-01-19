@@ -38,7 +38,7 @@ public class Client implements ClientPlayer, Runnable {
 
     @Override
     public void run() {
-        String line = null;
+        String line;
         while (this.run) {
             try {
                 line = in.readLine();
@@ -50,6 +50,9 @@ public class Client implements ClientPlayer, Runnable {
                 } else if (line.contains("?")) {
                     this.pw.println(line);
                     this.out.println(this.br.readLine());
+                } else if (line.equals("quit")) {
+                    this.pw.println("Terminating client...");
+                    this.run = false;
                 } else {
                     this.pw.println(line);
                 }
@@ -59,6 +62,7 @@ public class Client implements ClientPlayer, Runnable {
                 e.printStackTrace();
             }
         }
+        this.close();
     }
 
     @Override
@@ -78,16 +82,15 @@ public class Client implements ClientPlayer, Runnable {
 
     @Override
     public void close() {
-
+        try {
+            this.sock.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void sendUsername(String username) {
         this.out.println(username);
-    }
-
-    @Override
-    public boolean makeMove() {
-        return false;
     }
 }

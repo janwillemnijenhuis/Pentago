@@ -1,12 +1,10 @@
 package ss.server;
 
+import org.w3c.dom.Text;
 import ss.utils.TextIO;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.ArrayList;
 
 public class PentagoServer implements Server, Runnable {
@@ -16,6 +14,7 @@ public class PentagoServer implements Server, Runnable {
     private Thread t;
     private ArrayList<GameHandler> games = new ArrayList<>();
     private Socket bufSock = null;
+    private boolean run = true;
 
     public static void main(String[] args) {
         String address = null;
@@ -28,6 +27,14 @@ public class PentagoServer implements Server, Runnable {
             port = TextIO.getlnInt();
         } while (!server.setServerAddress(address) || !server.setValidPort(port));
         server.start();
+        boolean inGame = true;
+        do {
+            String line = TextIO.getlnString();
+            if (line.equals("quit")) {
+                server.stop();
+                inGame = false;
+            }
+        } while (inGame);
     }
 
     public boolean setServerAddress(String address) {
@@ -49,8 +56,7 @@ public class PentagoServer implements Server, Runnable {
 
     @Override
     public void run() {
-        boolean run = true;
-        while (run) {
+        while (this.run) {
             try {
                 Socket sock = ss.accept();
                 System.out.println("New player joined the game!");
@@ -64,9 +70,11 @@ public class PentagoServer implements Server, Runnable {
                     System.out.println("New game started!");
                     new Thread(gh).start();
                 }
+            } catch (SocketException e) {
+                System.out.println("Terminating server at port: " + this.getPort());
             } catch (IOException e) {
                 e.printStackTrace();
-                run = false;
+                stop();
             }
         }
     }
@@ -91,6 +99,7 @@ public class PentagoServer implements Server, Runnable {
     @Override
     public void stop() {
         try {
+            this.run = false;
             ss.close();
             t.join();
         } catch (IOException | InterruptedException e) {

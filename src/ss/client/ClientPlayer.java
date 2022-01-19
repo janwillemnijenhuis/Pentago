@@ -22,10 +22,4 @@ public interface ClientPlayer {
      * @return
      */
     void sendUsername(String username);
-
-    /**
-     * Asks the player to make a move
-     * @return true if correct move, false otherwise
-     */
-    boolean makeMove();
 }
