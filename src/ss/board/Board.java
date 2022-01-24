@@ -106,7 +106,7 @@ public class Board {
 
 
     /**
-     * checks if index if valid 0..35
+     * checks if index is valid 0..35
      *
      * @param index
      * @return true if valid, false otherwise
@@ -146,6 +146,27 @@ public class Board {
      * @return the marble in the field
      */
     public Marble getField(int row, int col) {
+        if (this.hasCol(Marble.WHITE) || this.hasCol(Marble.BLACK)) {
+            String color = " ";
+            if (this.hasCol(Marble.BLACK)) {
+               color = "B";
+            }
+            else {
+                color = "W";
+            }
+            if (winCol < 0) {
+                int i = - winCol - 1;
+//                fields[5][i].setColorCode("\u001B[33m" + color + "\u001B[0m"); fields[1][i].setColorCode("\u001B[33m" + color + "\u001B[0m");  fields[2][i].setColorCode("\u001B[33m" + color + "\u001B[0m"); fields[3][i].setColorCode("\u001B[33m" + color + "\u001B[0m");
+//                fields[4][i].setColorCode("\u001B[33m" + color + "\u001B[0m");
+            }
+
+            if (winCol > 0) {
+                int i = winCol - 1;
+//                fields[0][i].setColorCode("\u001B[33m" + color + "\u001B[0m"); fields[1][i].setColorCode("\u001B[33m" + color + "\u001B[0m");  fields[2][i].setColorCode("\u001B[33m" + color + "\u001B[0m"); fields[3][i].setColorCode("\u001B[33m" + color + "\u001B[0m");
+//                fields[4][i].setColorCode("\u001B[33m" + color + "\u001B[0m");
+            }
+        }
+
         return fields[row][col];
     }
 
@@ -234,10 +255,15 @@ public class Board {
      * @return true if full col, false otherwise
      */
     public boolean hasCol(Marble marble) {
+
         for (int i = 0; i < DIM; i++) {
-            if((fields[0][i] == marble && fields[0][i] == fields[1][i] && fields[0][i] == fields[2][i] && fields[0][i] == fields[3][i] && fields[0][i] == fields[4][i])||
-                    (fields[5][i] == marble && fields[5][i] == fields[1][i] && fields[5][i] == fields[2][i] && fields[5][i] == fields[3][i] && fields[5][i] == fields[4][i])) {
-                winCol = i;
+            if(fields[0][i] == marble && fields[0][i] == fields[1][i] && fields[0][i] == fields[2][i] && fields[0][i] == fields[3][i] && fields[0][i] == fields[4][i]){
+                winCol = i+1;
+                return true;
+            }
+
+            if(fields[5][i] == marble && fields[5][i] == fields[1][i] && fields[5][i] == fields[2][i] && fields[5][i] == fields[3][i] && fields[5][i] == fields[4][i]) {
+                winCol = (-i)-1;
                 return true;
             }
         }
@@ -251,15 +277,32 @@ public class Board {
      * @return true if full diagonal, false otherwise
      */
     public boolean hasDiagonal(Marble marble) {
+        String color=" ";
+        if (marble.isEqual(Marble.BLACK)) {
+            color = "B";
+        }
+        if (marble.isEqual(Marble.WHITE)) {
+            color = "W";
+        }
 
         for (int i = 2; i < 4; i++) {
             for (int j = 2; j < 4; j++) {
                 if (fields[i][j] == marble && fields[i-1][j+1] == marble && fields[i-2][j+2] == marble && fields[i+1][j-1] == marble && fields[i+2][j-2] == marble ) {
-                    winDiag = (2*i)-j;
+//                    fields[i][j].setColorCode("\u001B[33m" + color + "\u001B[0m");
+//                    fields[i-1][j+1].setColorCode("\u001B[33m" +  color + "\u001B[0m");
+//                    fields[i-2][j+2].setColorCode("\u001B[33m" + color + "\u001B[0m");
+//                    fields[i+1][j-1].setColorCode("\u001B[33m" + color + "\u001B[0m");
+//                    fields[i+2][j-2].setColorCode("\u001B[33m" + color + "\u001B[0m");
+                    //winDiag = (2*i)-j;
                     return true;
                 }
                 else if (fields[i][j] == marble && fields[i-1][j-1] == marble && fields[i-2][j-2] == marble && fields[i+1][j+1] == marble && fields[i+2][j+2] == marble ) {
-                    winDiag = i-(2*j);
+//                    fields[i][j].setColorCode("\u001B[33m");
+//                    fields[i-1][j-1].setColorCode("\u001B[33m");
+//                    fields[i-2][j-2].setColorCode("\u001B[33m");
+//                    fields[i+1][j+1].setColorCode("\u001B[33m");
+//                    fields[i+2][j+2].setColorCode("\u001B[33m");
+                    //winDiag = i-(2*j);
                     return true;
                 }
 
@@ -469,7 +512,7 @@ public class Board {
                 s = s + LINE + DELIM + LINE + "\n";
             }
             for (int j = 0; j < DIM; j++) {
-                row = row + "  " + getField(i, j).toString().substring(0, 1).replace("E", " ") + " ";
+                row = row + "  " + getField(i, j).getColorCode() + " ";
                 if (j < DIM - 1) {
                     row = row + "|";
                 }

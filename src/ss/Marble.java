@@ -6,9 +6,23 @@ package ss;
  * @version 0.2.0
  */
 public enum Marble {
-    EMPTY,
-    BLACK,
-    WHITE;
+    EMPTY(" "),
+    BLACK("\u001B[36mB\u001B[0m"),
+    WHITE("\u001B[37mW\u001B[0m");
+
+    String colorCode;
+
+    Marble(String colorCode) {
+        this.colorCode = colorCode;
+    }
+
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
 
     /**
      * checks if marble is equal to the other marble
